@@ -1,72 +1,79 @@
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from "@/integrations/supabase/client";
 
 export const userProfileService = {
   async fetchUserProfile(userId: string) {
-    console.log('Fetching user profile for:', userId);
-    try {
-      // First, try to get the most recent profile for this user
-      const { data: profiles, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('auth_id', userId)
-        .order('updated_at', { ascending: false })
-        .limit(1);
-
-      if (error) {
-        console.error('Error fetching user profile:', error);
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname;
+      if (path === "/" || path === "/register") {
+        console.log("Skipping profile fetch on", path);
         return null;
       }
+    }
 
-      // If we have a profile, return the most recent one
-      if (profiles && profiles.length > 0) {
-        const profile = profiles[0];
-        console.log('User profile fetched:', profile);
-        
-        // If there are multiple profiles, clean up duplicates (keep the most recent)
-        if (profiles.length > 1) {
-          console.log('Multiple profiles found, cleaning up duplicates');
-          const { error: deleteError } = await supabase
-            .from('users')
-            .delete()
-            .eq('auth_id', userId)
-            .neq('id', profile.id);
-          
-          if (deleteError) {
-            console.error('Error cleaning up duplicate profiles:', deleteError);
-          }
-        }
-        
+    console.log("Fetching user profile for:", userId);
+
+    try {
+      // Step 1: Check if profile already exists
+      const { data: profile, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("auth_id", userId)
+        .single();
+
+      if (profile) {
+        console.log("User profile exists:", profile);
         return profile;
       }
 
-      // If no profile exists, create one
-      console.log('No profile found, creating new profile');
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data: newProfile, error: insertError } = await supabase
-          .from('users')
-          .insert({
-            auth_id: user.id,
-            email: user.email || '',
-            full_name: user.user_metadata?.full_name || '',
-            user_type: 'job_seeker'
-          })
-          .select()
-          .single();
-
-        if (insertError) {
-          console.error('Error creating user profile:', insertError);
-          return null;
-        } else {
-          console.log('User profile created:', newProfile);
-          return newProfile;
-        }
+      if (error && error.code !== "PGRST116") {
+        console.error("Error checking user profile:", error);
+        return null;
       }
-      
-      return null;
-    } catch (error) {
-      console.error('Error in fetchUserProfile:', error);
-      return null;
+
+      // Step 2: Get authenticated user info
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authError || !user || !user.email) {
+        console.error("User not authenticated or missing email");
+        throw new Error("Please verify your account");
+      }
+
+      // ✅ Step 3: Check if email is verified
+      const isEmailVerified =
+        user.email_confirmed_at ||
+        user.confirmed_at ||
+        user.confirmation_sent_at;
+
+      if (!isEmailVerified) {
+        console.warn("Email not verified for:", user.email);
+        throw new Error("Please verify your account");
+      }
+
+      // Step 4: Create new profile
+      const { data: newProfile, error: insertError } = await supabase
+        .from("users")
+        .insert({
+          auth_id: user.id,
+          email: user.email,
+          full_name: user.user_metadata?.full_name || "",
+          user_type: user.user_metadata?.user_type || "",
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error("Error creating user profile:", insertError);
+        return null;
+      }
+
+      console.log("User profile created:", newProfile);
+      return newProfile;
+    } catch (error: any) {
+      console.error("Error in fetchUserProfile:", error.message || error);
+      throw error;
     }
-  }
+  },
 };

@@ -1,7 +1,13 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { useDocuments } from "@/hooks/useDocuments";
 import { useToast } from "@/hooks/use-toast";
@@ -15,7 +21,10 @@ interface UploadDialogProps {
   onClose?: () => void;
 }
 
-const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: UploadDialogProps = {}) => {
+const UploadDialog = ({
+  isOpen: externalIsOpen,
+  onClose: externalOnClose,
+}: UploadDialogProps = {}) => {
   const [uploadMethod, setUploadMethod] = useState<"file" | "camera">("file");
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -32,9 +41,11 @@ const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: Uplo
 
   // Use external props if provided, otherwise use internal state
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
-  const setIsOpen = externalOnClose ? 
-    (open: boolean) => { if (!open) externalOnClose(); } :
-    setInternalIsOpen;
+  const setIsOpen = externalOnClose
+    ? (open: boolean) => {
+        if (!open) externalOnClose();
+      }
+    : setInternalIsOpen;
 
   const resetUploadForm = () => {
     setUploadMethod("file");
@@ -49,8 +60,8 @@ const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: Uplo
   };
 
   const convertDataUrlToFile = (dataUrl: string, filename: string): File => {
-    const arr = dataUrl.split(',');
-    const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/jpeg';
+    const arr = dataUrl.split(",");
+    const mime = arr[0].match(/:(.*?);/)?.[1] || "image/jpeg";
     const bstr = atob(arr[1]);
     let n = bstr.length;
     const u8arr = new Uint8Array(n);
@@ -68,7 +79,7 @@ const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: Uplo
         toast({
           title: "Missing Information",
           description: "Please fill in all required fields",
-          variant: "destructive"
+          variant: "destructive",
         });
         return;
       }
@@ -78,14 +89,17 @@ const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: Uplo
       if (uploadMethod === "file" && selectedFile) {
         fileToUpload = selectedFile;
       } else if (uploadMethod === "camera" && capturedImage) {
-        fileToUpload = convertDataUrlToFile(capturedImage, `${documentName}.jpg`);
+        fileToUpload = convertDataUrlToFile(
+          capturedImage,
+          `${documentName}.jpg`
+        );
       }
 
       if (!fileToUpload) {
         toast({
           title: "No File Selected",
           description: "Please select a file or capture an image",
-          variant: "destructive"
+          variant: "destructive",
         });
         return;
       }
@@ -97,7 +111,7 @@ const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: Uplo
           toast({
             title: "Missing Custom Type",
             description: "Please specify the custom document type",
-            variant: "destructive"
+            variant: "destructive",
           });
           return;
         }
@@ -106,7 +120,7 @@ const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: Uplo
         finalDocumentType = documentType;
       }
 
-      console.log('Uploading document with type:', finalDocumentType);
+      console.log("Uploading document with type:", finalDocumentType);
 
       // First upload the document - uploadDocument doesn't return the document object
       await uploadDocument(fileToUpload, {
@@ -114,42 +128,51 @@ const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: Uplo
         type: finalDocumentType as any,
         issuer: issuer,
         expiry_date: expiryDate || undefined,
-        privacy: 'private'
+        privacy: "private",
       });
 
       // Then trigger verification without document ID since we don't have it
-      try {
-        const { verificationService } = await import('@/services/verificationService');
-        const verificationResult = await verificationService.verifyDocument(fileToUpload);
+      // try {
+      //   const { verificationService } = await import(
+      //     "@/services/verificationService"
+      //   );
+      //   const verificationResult = await verificationService.verifyDocument(
+      //     fileToUpload
+      //   );
 
-        if (verificationResult.success) {
-          toast({
-            title: "Document Uploaded and Verified",
-            description: `Document uploaded successfully. Verification status: ${verificationResult.verification?.status}`,
-          });
-        } else {
-          toast({
-            title: "Document Uploaded",
-            description: "Document uploaded but verification failed. You can try verification again later.",
-            variant: "destructive"
-          });
-        }
-      } catch (verificationError) {
-        console.error('Verification error:', verificationError);
-        toast({
-          title: "Document Uploaded",
-          description: "Document uploaded but verification is temporarily unavailable.",
-        });
-      }
+      //   if (verificationResult.success) {
+      //     toast({
+      //       title: "Document Uploaded and Verified",
+      //       description: `Document uploaded successfully. Verification status: ${verificationResult.verification?.status}`,
+      //     });
+      //   } else {
+      //     toast({
+      //       title: "Document Uploaded",
+      //       description:
+      //         "Document uploaded but verification failed. You can try verification again later.",
+      //       variant: "destructive",
+      //     });
+      //   }
+      // } catch (verificationError) {
+      //   console.error("Verification error:", verificationError);
+      //   toast({
+      //     title: "Document Uploaded",
+      //     description:
+      //       "Document uploaded but verification is temporarily unavailable.",
+      //   });
+      // }
 
       setIsOpen(false);
       resetUploadForm();
     } catch (error) {
-      console.error('Upload failed:', error);
+      console.error("Upload failed:", error);
       toast({
         title: "Upload Failed",
-        description: error instanceof Error ? error.message : "An unexpected error occurred",
-        variant: "destructive"
+        description:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred",
+        variant: "destructive",
       });
     } finally {
       setIsUploading(false);
@@ -162,10 +185,13 @@ const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: Uplo
 
   // Always use Dialog component to maintain context
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => {
-      setIsOpen(open);
-      if (!open) resetUploadForm();
-    }}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open);
+        if (!open) resetUploadForm();
+      }}
+    >
       {externalIsOpen === undefined && (
         <DialogTrigger asChild>
           <Button className="w-full sm:w-auto">
@@ -182,11 +208,11 @@ const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: Uplo
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <UploadMethodSelector 
+          <UploadMethodSelector
             uploadMethod={uploadMethod}
             setUploadMethod={setUploadMethod}
           />
-          
+
           <FileUploadInput
             uploadMethod={uploadMethod}
             selectedFile={selectedFile}
@@ -209,7 +235,7 @@ const UploadDialog = ({ isOpen: externalIsOpen, onClose: externalOnClose }: Uplo
             expiryDate={expiryDate}
             setExpiryDate={setExpiryDate}
           />
-          
+
           <UploadActions
             onUpload={handleUpload}
             onCancel={handleCancel}

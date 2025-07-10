@@ -1,8 +1,14 @@
-
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { PricingPlan } from "@/services/pricingService";
 
 interface PricingCardProps {
@@ -12,7 +18,12 @@ interface PricingCardProps {
   isLoading?: boolean;
 }
 
-const PricingCard = ({ plan, isCurrentPlan, onSelectPlan, isLoading }: PricingCardProps) => {
+const PricingCard = ({
+  plan,
+  isCurrentPlan,
+  onSelectPlan,
+  isLoading,
+}: PricingCardProps) => {
   const formatPrice = () => {
     if (plan.price_per_month === null && plan.price_per_check === null) {
       return "Contact Sales";
@@ -30,28 +41,26 @@ const PricingCard = ({ plan, isCurrentPlan, onSelectPlan, isLoading }: PricingCa
   };
 
   const getButtonText = () => {
-    if (isCurrentPlan) {
-      return "Current Plan";
-    }
-    if (plan.name === "Free") {
-      return "Get Started Free";
-    }
-    if (plan.name === "University" || plan.name === "Enterprise") {
+    if (isCurrentPlan) return "Current Plan";
+    if (plan.name === "Free") return "Get Started Free";
+    if (plan.name === "University" || plan.name === "Enterprise")
       return "Contact Sales";
-    }
     return "Upgrade Now";
   };
 
-  const shouldShowContactSales = plan.name === "University" || plan.name === "Enterprise";
+  const shouldShowContactSales =
+    plan.name === "University" || plan.name === "Enterprise";
 
   return (
-    <Card className={`relative h-full ${plan.badge ? 'ring-2 ring-blue-500' : ''}`}>
+    <Card
+      className={`relative h-full ${plan.badge ? "ring-2 ring-blue-500" : ""}`}
+    >
       {plan.badge && (
         <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500">
           {plan.badge}
         </Badge>
       )}
-      
+
       <CardHeader className="text-center pb-2">
         <CardTitle className="text-xl font-bold">{plan.name}</CardTitle>
         <div className="text-3xl font-bold text-blue-600 mt-2">
@@ -73,7 +82,9 @@ const PricingCard = ({ plan, isCurrentPlan, onSelectPlan, isLoading }: PricingCa
           {plan.verification_limit && (
             <li className="flex items-center space-x-2">
               <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
-              <span className="text-sm">Up to {plan.verification_limit} verifications per month</span>
+              <span className="text-sm">
+                Up to {plan.verification_limit} verifications per month
+              </span>
             </li>
           )}
         </ul>
@@ -84,9 +95,20 @@ const PricingCard = ({ plan, isCurrentPlan, onSelectPlan, isLoading }: PricingCa
           className="w-full"
           variant={isCurrentPlan ? "outline" : "default"}
           disabled={isCurrentPlan || isLoading}
-          onClick={() => shouldShowContactSales ? window.open('mailto:sales@trusttalent.com') : onSelectPlan(plan.id)}
+          onClick={() =>
+            shouldShowContactSales
+              ? window.open("mailto:sales@trusttalent.com")
+              : onSelectPlan(plan.id)
+          }
         >
-          {getButtonText()}
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Redirecting...
+            </>
+          ) : (
+            getButtonText()
+          )}
         </Button>
       </CardFooter>
     </Card>

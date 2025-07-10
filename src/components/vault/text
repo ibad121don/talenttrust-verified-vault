@@ -1,0 +1,115 @@
+const handleVerifyDocument = async () => {
+  try {
+    setVerifying(true);
+
+    const fullUrl = document.file_url;
+    const path = fullUrl.split("/user_documents/")[1];
+
+    const { data: signedUrlData, error } = await supabase.storage
+      .from("user_documents")
+      .createSignedUrl(path, 60);
+
+    if (error || !signedUrlData) {
+      toast({
+        title: "Verification Failed ❌",
+        description: "Could not generate signed URL.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const signedUrl = signedUrlData.signedUrl;
+    console.log("🔐 Signed URL generated:", signedUrl);
+
+    const result = await VerifcationData(signedUrl);
+    const { extracted, stamp, result: resultMessage } = result;
+
+    const requiredFields = ["name", "dateOfIssue", "registrationNumber"];
+    let matchCount = 0;
+
+    for (const field of requiredFields) {
+      if (extracted?.[field] && extracted[field] !== "Not Found") {
+        matchCount++;
+      }
+    }
+
+    const stampDetected = stamp === "Detected ✅";
+
+    let newStatus: "verified" | "partial_verified" | "failed" = "failed";
+    let toastDescription = "";
+
+    if (!stampDetected) {
+      toastDescription = "Stamp not detected — document cannot be verified.";
+    } else {
+      if (matchCount === 3) {
+        newStatus = "verified";
+        toastDescription = "All fields matched perfectly 🎉";
+      } else if (matchCount >= 1) {
+        newStatus = "partial_verified";
+        toastDescription = "Some fields matched. Please review. 🧐";
+      } else {
+        // ✅ NEW: Stamp is detected but no fields matched — still mark verified
+        newStatus = "verified";
+        toastDescription =
+          "No fields matched but stamp detected — marked as verified.";
+      }
+    }
+
+    await supabase
+      .from("documents")
+      .update({ status: newStatus })
+      .eq("id", document.id);
+
+    document.status = newStatus;
+
+    if (newStatus !== "failed") {
+      await documentService.deleteVerificationRequest(document.id, newStatus);
+      console.log("🗑️ Verification request deleted");
+    }
+
+    toast({
+      title:
+        newStatus === "verified"
+          ? "Document Verified"
+          : newStatus === "partial_verified"
+          ? "Partially Verified"
+          : "Verification Failed",
+      description: toastDescription,
+      variant: newStatus === "failed" ? "destructive" : "default",
+    });
+  } catch (error) {
+    console.error("🛑 Verification Error:", error);
+    toast({
+      title: "Verification Failed",
+      description: "Unexpected error during verification.",
+      variant: "destructive",
+    });
+  } finally {
+    setVerifying(false);
+  }
+};
+
+const VerifcationData = async (imageUrl: string) => {
+  try {
+    console.log("📨 Sending OCR request for:", imageUrl);
+
+    const res = await fetch("http://localhost:8001/api/v1/ocr/extract-text", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: imageUrl }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error("❌ OCR API error response:", data);
+      throw new Error(data.message || "OCR request failed");
+    }
+
+    console.log("✅ OCR API success response:", data);
+    return data;
+  } catch (error) {
+    console.error("💥 OCR fetch failed:", error);
+    throw error;
+  }
+};

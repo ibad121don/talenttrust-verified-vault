@@ -1,4 +1,3 @@
-
 import HomeHeader from "@/components/home/HomeHeader";
 import HeroSection from "@/components/home/HeroSection";
 import FeaturesSection from "@/components/home/FeaturesSection";

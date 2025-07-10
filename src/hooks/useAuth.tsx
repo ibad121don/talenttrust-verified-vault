@@ -1,17 +1,24 @@
-
-import { createContext, useContext, useState, useEffect } from 'react';
-import { User } from '@supabase/supabase-js';
-import { useNavigate } from 'react-router-dom';
-import { authService } from '@/services/authService';
-import { useAuthSession } from './useAuthSession';
-import { userProfileService } from '@/services/userProfileService';
+import { createContext, useContext, useState, useEffect } from "react";
+import { User } from "@supabase/supabase-js";
+import { useNavigate } from "react-router-dom";
+import { authService } from "@/services/authService";
+import { useAuthSession } from "./useAuthSession";
+import { userProfileService } from "@/services/userProfileService";
 
 interface AuthContextType {
   user: User | null;
   userProfile: any | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<{ user: User | null; error: string | null; isAdmin?: boolean }>;
-  register: (email: string, password: string, fullName: string, userType: string) => Promise<{ user: User | null; error: string | null }>;
+  login: (
+    email: string,
+    password: string
+  ) => Promise<{ user: User | null; error: string | null; isAdmin?: boolean }>;
+  register: (
+    email: string,
+    password: string,
+    fullName: string,
+    userType: string
+  ) => Promise<{ user: User | null; error: string | null }>;
   logout: () => Promise<void>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -30,12 +37,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (!user) return false;
 
     try {
-      console.log('Checking admin status for user:', user.id);
+      console.log("Checking admin status for user:", user.id);
       const isAdmin = await authService.checkAdminStatus(user.id);
-      console.log('Admin status result:', isAdmin);
+      console.log("Admin status result:", isAdmin);
       return isAdmin;
     } catch (error) {
-      console.error('Error checking admin status:', error);
+      console.error("Error checking admin status:", error);
       return false;
     }
   };
@@ -53,22 +60,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const result = await authService.login({ email, password });
       if (result.user && !result.error) {
-        console.log('Login successful, user:', result.user.id, 'isAdmin:', result.isAdmin);
+        console.log(
+          "Login successful, user:",
+          result.user.id,
+          "isAdmin:",
+          result.isAdmin
+        );
       }
       return result;
     } catch (error: any) {
-      console.error('Login error:', error);
-      return { user: null, error: error.message || 'Login failed' };
+      console.error("Login error:", error);
+      return { user: null, error: error.message || "Login failed" };
     }
   };
 
-  const register = async (email: string, password: string, fullName: string, userType: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    fullName: string,
+    userType: string
+  ) => {
     try {
-      const result = await authService.register({ email, password, fullName, userType: userType as any });
+      const result = await authService.register({
+        email,
+        password,
+        fullName,
+        userType: userType as any,
+      });
       return result;
     } catch (error: any) {
-      console.error('Registration error:', error);
-      return { user: null, error: error.message || 'Registration failed' };
+      console.error("Registration error:", error);
+      return { user: null, error: error.message || "Registration failed" };
     }
   };
 
@@ -76,9 +98,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await authService.logout();
       setUserProfile(null);
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     }
   };
 
@@ -95,17 +117,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      userProfile,
-      loading: sessionLoading || profileLoading,
-      login,
-      register,
-      logout,
-      signOut,
-      refreshProfile,
-      checkAdminStatus
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        userProfile,
+        loading: sessionLoading || profileLoading,
+        login,
+        register,
+        logout,
+        signOut,
+        refreshProfile,
+        checkAdminStatus,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -114,7 +138,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

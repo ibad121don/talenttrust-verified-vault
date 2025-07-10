@@ -1,8 +1,13 @@
-
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { BackButton } from "@/components/auth/BackButton";
@@ -15,7 +20,7 @@ const Register = () => {
   const { toast } = useToast();
   const { register } = useAuth();
   const defaultRole = searchParams.get("role") || "seeker";
-  
+
   const [activeTab, setActiveTab] = useState(defaultRole);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -26,26 +31,26 @@ const Register = () => {
     company: "",
     universityName: "",
     accreditationId: "",
-    phone: ""
+    phone: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
       toast({
         title: "Error",
         description: "Passwords do not match",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
 
     if (!formData.fullName.trim()) {
       toast({
-        title: "Error", 
+        title: "Error",
         description: "Full name is required",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -55,15 +60,15 @@ const Register = () => {
     try {
       // Map activeTab to userType
       const userTypeMap = {
-        seeker: 'job_seeker',
-        employer: 'employer', 
-        university: 'university',
-        admin: 'job_seeker' // Default fallback
+        seeker: "job_seeker",
+        employer: "employer",
+        university: "university",
+        admin: "admin", // Default fallback
       };
 
       const { error } = await register(
-        formData.email, 
-        formData.password, 
+        formData.email,
+        formData.password,
         formData.fullName,
         userTypeMap[activeTab as keyof typeof userTypeMap]
       );
@@ -72,26 +77,26 @@ const Register = () => {
         toast({
           title: "Registration Failed",
           description: error,
-          variant: "destructive"
+          variant: "destructive",
         });
         return;
       }
 
       toast({
         title: "Account Created Successfully!",
-        description: "Please check your email inbox and click the verification link before you can sign in. You may need to check your spam folder.",
+        description:
+          "Please check your email inbox and click the verification link before you can sign in. You may need to check your spam folder.",
       });
 
       // Redirect to login page after successful registration
       setTimeout(() => {
         navigate("/login");
       }, 3000);
-
     } catch (error: any) {
       toast({
         title: "Registration Failed",
         description: error.message || "An unexpected error occurred",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -99,18 +104,15 @@ const Register = () => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-cyan-50 to-blue-50 py-12">
-      <BackButton 
-        onClick={() => navigate("/")}
-        text="Back to Home"
-      />
+      <BackButton onClick={() => navigate("/")} text="Back to Home" />
 
       <div className="container mx-auto px-4">
         <LoginHeader
@@ -124,7 +126,9 @@ const Register = () => {
           <Card className="backdrop-blur-sm bg-white/90 border-0 shadow-xl">
             <CardHeader>
               <CardTitle>Sign Up</CardTitle>
-              <CardDescription>Choose your account type and get started</CardDescription>
+              <CardDescription>
+                Choose your account type and get started
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <RegistrationTabs
@@ -139,7 +143,11 @@ const Register = () => {
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
                   Already have an account?{" "}
-                  <Button variant="link" className="p-0" onClick={() => navigate("/login")}>
+                  <Button
+                    variant="link"
+                    className="p-0"
+                    onClick={() => navigate("/login")}
+                  >
                     Sign in
                   </Button>
                 </p>

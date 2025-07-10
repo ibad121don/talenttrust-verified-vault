@@ -5,7 +5,7 @@ CREATE TABLE public.users (
   auth_id UUID REFERENCES auth.users NOT NULL,
   email TEXT NOT NULL,
   full_name TEXT,
-  user_type TEXT CHECK (user_type IN ('job_seeker', 'employer', 'university')) NOT NULL DEFAULT 'job_seeker',
+  user_type TEXT CHECK (user_type IN ('job_seeker', 'employer', 'university', 'admin')) NOT NULL DEFAULT 'job_seeker',
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
