@@ -121,21 +121,80 @@ const Pricing = () => {
     setIsLoading(false);
   };
 
-  const handleSelectPlan = async (planId: string) => {
+  // const handleSelectPlan = async (planId: string) => {
+  //   if (!user) {
+  //     navigate("/login", { state: { returnTo: "/pricing" } });
+  //     return;
+  //   }
+
+  //   setProcessingPlanId(planId);
+
+  //   try {
+  //     const res = await fetch(
+  //       "http://localhost:8001/api/v1/stripe/create-checkout-session",
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ userId: user.id, planId }),
+  //       }
+  //     );
+
+  //     const response = await res.json();
+  //     if (!res.ok || !response?.data?.id) {
+  //       throw new Error(
+  //         response.message || "Failed to create checkout session"
+  //       );
+  //     }
+
+  //     const stripe = await stripePromise;
+  //     if (!stripe) throw new Error("Stripe not loaded");
+
+  //     const { error } = await stripe.redirectToCheckout({
+  //       sessionId: response.data.id,
+  //     });
+  //     if (error) throw error;
+  //   } catch (error: any) {
+  //     toast({
+  //       title: "Error",
+  //       description: error.message || "Could not redirect to checkout.",
+  //       variant: "destructive",
+  //     });
+  //   } finally {
+  //     setProcessingPlanId(null);
+  //   }
+  // };
+  const handleSelectPlan = async (planId: string, id: string) => {
     if (!user) {
       navigate("/login", { state: { returnTo: "/pricing" } });
       return;
     }
 
     setProcessingPlanId(planId);
+    console.log("🛒 Selected plan:", id);
 
     try {
+      if (id == "Free") {
+        navigate("/dashboard/seeker");
+        return;
+      }
+
+      // data store local
+
+      await localStorage.setItem(
+        "user_subcription",
+        JSON.stringify({
+          userId: user.id,
+          planId: id.toLowerCase(),
+        })
+      );
+
+      // For Standard and Premium plans
       const res = await fetch(
         "http://localhost:8001/api/v1/stripe/create-checkout-session",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user.id, planId }),
+          body: JSON.stringify({ userId: user.id, planId: id.toLowerCase() }),
         }
       );
 
@@ -154,9 +213,10 @@ const Pricing = () => {
       });
       if (error) throw error;
     } catch (error: any) {
+      console.log("❌ Error during plan selection:", error.message);
       toast({
         title: "Error",
-        description: error.message || "Could not redirect to checkout.",
+        description: error.message || "Could not process the plan selection.",
         variant: "destructive",
       });
     } finally {
@@ -250,7 +310,9 @@ const Pricing = () => {
               key={plan.id}
               plan={plan}
               isCurrentPlan={userSubscription?.pricing_plan_id === plan.id}
-              onSelectPlan={handleSelectPlan}
+              onSelectPlan={() => {
+                handleSelectPlan(plan.id, plan.name);
+              }}
               isLoading={processingPlanId === plan.id}
             />
           ))}
