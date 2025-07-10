@@ -139,9 +139,11 @@ const Login = () => {
           );
         }
       } else {
-        const profile = await userProfileService.fetchUserProfile(
-          result.user.id
-        );
+        var profile = await userProfileService.fetchUserProfile(result.user.id);
+        if (profile == null) {
+          await userProfileService.createProfile();
+          profile = await userProfileService.fetchUserProfile(result.user.id);
+        }
         await localStorage.setItem("userprofile", JSON.stringify(profile));
         if (profile.user_type == "admin") {
           console.log("Admin user detected, redirecting to admin dashboard");

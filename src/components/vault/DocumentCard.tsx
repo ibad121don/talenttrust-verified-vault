@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -26,6 +26,7 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
   const { toast } = useToast();
   const { requestVerification, deleteDocument } = useDocuments();
   const [verifying, setVerifying] = useState(false);
+  const [verifyingdoc, setVerifyingDoc] = useState(false);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -42,7 +43,26 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
         return "text-gray-600 bg-gray-100";
     }
   };
+  useEffect(() => {
+    checkuser();
+  }, []);
+  const checkuser = async () => {
+    let dataUser = await localStorage.getItem("userprofile");
+    let tempUser = JSON.parse(dataUser);
+    const { data: profile, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", tempUser.id)
+      .single();
+    const { data: subcripti_data } = await supabase
+      .from("user_subscriptions")
+      .select("*")
+      .eq("user_id", tempUser.id);
 
+    if (profile.documents_verified == 1 && subcripti_data.length == 0) {
+      setVerifyingDoc(true);
+    }
+  };
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "verified":
@@ -60,6 +80,14 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
   };
   const handleVerifyDocument = async () => {
     try {
+      if (verifyingdoc) {
+        toast({
+          title: "Verification Failed",
+          description: "Please Upgrade Your Plan",
+          variant: "destructive",
+        });
+        return;
+      }
       setVerifying(true);
 
       const fullUrl = document.file_url;
