@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>API Documentation - Professional</title>
+  <style>
+    :root {
+      /* Professional Light Theme (default) */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      --bg-code: #f8f9fa;
+      --text-primary: #212529;
+      --text-secondary: #6c757d;
+      --text-muted: #868e96;
+      --accent-primary: #007bff;
+      --accent-secondary: #0056b3;
+      --border-primary: #dee2e6;
+      --border-secondary: #e9ecef;
+      --success: #28a745;
+      --warning: #ffc107;
+      --error: #dc3545;
+      --info: #17a2b8;
+      --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+      --border-radius: 0.375rem;
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --container-width: 1200px;
+      --header-height: 70px;
+    }
+
+    /* Dark Theme */
+    [data-theme="dark"] {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #2d2d2d;
+      --bg-card: #343a40;
+      --bg-input: #495057;
+      --bg-code: #2d2d2d;
+      --text-primary: #ffffff;
+      --text-secondary: #ced4da;
+      --text-muted: #adb5bd;
+      --border-primary: #495057;
+      --border-secondary: #343a40;
+    }
+
+    /* Corporate Blue */
+    [data-theme="corporate"] {
+      --bg-primary: #f4f6f8;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      --bg-code: #f8fafc;
+      --text-primary: #2d3748;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --accent-primary: #3182ce;
+      --accent-secondary: #2c5282;
+      --border-primary: #e2e8f0;
+      --border-secondary: #edf2f7;
+      --container-width: 1400px;
+      --header-height: 80px;
+    }
+
+    /* Minimal Clean */
+    [data-theme="minimal"] {
+      --bg-primary: #fafafa;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      --bg-code: #f5f5f5;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --text-muted: #999999;
+      --accent-primary: #0066cc;
+      --accent-secondary: #004499;
+      --border-primary: #dddddd;
+      --border-secondary: #eeeeee;
+      --border-radius: 0.25rem;
+      --container-width: 1000px;
+    }
+
+    /* Modern Gradient */
+    [data-theme="gradient"] {
+      --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --bg-secondary: rgba(255, 255, 255, 0.1);
+      --bg-card: rgba(255, 255, 255, 0.9);
+      --bg-input: rgba(255, 255, 255, 0.8);
+      --bg-code: rgba(255, 255, 255, 0.95);
+      --text-primary: #2d3748;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --accent-primary: #667eea;
+      --accent-secondary: #764ba2;
+      --border-primary: rgba(255, 255, 255, 0.2);
+      --border-secondary: rgba(255, 255, 255, 0.1);
+      --border-radius: 1rem;
+      --header-height: 90px;
+    }
+
+    /* Tech Stack */
+    [data-theme="tech"] {
+      --bg-primary: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-card: #21262d;
+      --bg-input: #30363d;
+      --bg-code: #161b22;
+      --text-primary: #c9d1d9;
+      --text-secondary: #8b949e;
+      --text-muted: #6e7681;
+      --accent-primary: #58a6ff;
+      --accent-secondary: #1f6feb;
+      --border-primary: #30363d;
+      --border-secondary: #21262d;
+      --border-radius: 0.5rem;
+      --font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    /* Ocean Breeze */
+    [data-theme="ocean"] {
+      --bg-primary: #e0f7fa;
+      --bg-secondary: #b2ebf2;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      --bg-code: #f1f8e9;
+      --text-primary: #0d47a1;
+      --text-secondary: #1565c0;
+      --text-muted: #42a5f5;
+      --accent-primary: #00bcd4;
+      --accent-secondary: #0097a7;
+      --border-primary: #4dd0e1;
+      --border-secondary: #80deea;
+      --border-radius: 2rem;
+      --container-width: 1300px;
+    }
+
+    /* Sunset Warm */
+    [data-theme="sunset"] {
+      --bg-primary: #fff3e0;
+      --bg-secondary: #ffe0b2;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      --bg-code: #fff8f0;
+      --text-primary: #e65100;
+      --text-secondary: #f57c00;
+      --text-muted: #ff9800;
+      --accent-primary: #ff5722;
+      --accent-secondary: #d84315;
+      --border-primary: #ffcc02;
+      --border-secondary: #ffb74d;
+      --border-radius: 0.75rem;
+    }
+
+    /* Professional Purple */
+    [data-theme="purple"] {
+      --bg-primary: #f3e5f5;
+      --bg-secondary: #e1bee7;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      --bg-code: #fce4ec;
+      --text-primary: #4a148c;
+      --text-secondary: #6a1b9a;
+      --text-muted: #8e24aa;
+      --accent-primary: #9c27b0;
+      --accent-secondary: #7b1fa2;
+      --border-primary: #ce93d8;
+      --border-secondary: #e1bee7;
+      --container-width: 1100px;
+      --header-height: 75px;
+    }
+
+    /* Green Nature */
+    [data-theme="nature"] {
+      --bg-primary: #e8f5e8;
+      --bg-secondary: #c8e6c9;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      --bg-code: #f1f8e9;
+      --text-primary: #1b5e20;
+      --text-secondary: #2e7d32;
+      --text-muted: #43a047;
+      --accent-primary: #4caf50;
+      --accent-secondary: #388e3c;
+      --border-primary: #81c784;
+      --border-secondary: #a5d6a7;
+      --border-radius: 1.5rem;
+    }
+
+    /* Cyberpunk */
+    [data-theme="cyber"] {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #1a1a2e;
+      --bg-card: #16213e;
+      --bg-input: #0f3460;
+      --bg-code: #1a1a2e;
+      --text-primary: #00ff9f;
+      --text-secondary: #00d4aa;
+      --text-muted: #00b894;
+      --accent-primary: #ff006e;
+      --accent-secondary: #c7008b;
+      --border-primary: #00ff9f;
+      --border-secondary: #00d4aa;
+      --border-radius: 0;
+      --font-family: 'Orbitron', 'Courier New', monospace;
+    }
+
+    /* Monochrome */
+    [data-theme="mono"] {
+      --bg-primary: #f8f9fa;
+      --bg-secondary: #e9ecef;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      --bg-code: #f8f9fa;
+      --text-primary: #212529;
+      --text-secondary: #495057;
+      --text-muted: #6c757d;
+      --accent-primary: #000000;
+      --accent-secondary: #343a40;
+      --border-primary: #dee2e6;
+      --border-secondary: #e9ecef;
+      --border-radius: 0;
+      --container-width: 900px;
+    }
+
+    /* Retro Gaming */
+    [data-theme="retro"] {
+      --bg-primary: #2d1b69;
+      --bg-secondary: #11052c;
+      --bg-card: #3d2c8d;
+      --bg-input: #4c3a9b;
+      --bg-code: #11052c;
+      --text-primary: #fcfcfc;
+      --text-secondary: #e6e6fa;
+      --text-muted: #dda0dd;
+      --accent-primary: #ff6b35;
+      --accent-secondary: #ff8c42;
+      --border-primary: #ff6b35;
+      --border-secondary: #ff8c42;
+      --border-radius: 0.25rem;
+      --font-family: 'Press Start 2P', 'Courier New', monospace;
+    }
+
+    /* Business Professional */
+    [data-theme="business"] {
+      --bg-primary: #fafbfc;
+      --bg-secondary: #f6f8fa;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      --bg-code: #f6f8fa;
+      --text-primary: #24292e;
+      --text-secondary: #586069;
+      --text-muted: #6a737d;
+      --accent-primary: #0366d6;
+      --accent-secondary: #005cc5;
+      --border-primary: #e1e4e8;
+      --border-secondary: #f6f8fa;
+      --border-radius: 0.375rem;
+      --container-width: 1400px;
+      --header-height: 85px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    /* Enhanced API Visualization */
+    .api-status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      animation: pulse 2s infinite;
+    }
+
+    .api-status-indicator.online {
+      background: var(--success);
+    }
+
+    .api-status-indicator.offline {
+      background: var(--error);
+    }
+
+    /* Header */
+    header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-primary);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--header-height);
+    }
+
+    .header-content {
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      height: 100%;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--accent-primary);
+      border-radius: var(--border-radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .logo h1 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .logo p {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin: 0;
+    }
+
+    .header-controls {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .stats {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .stat-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--border-radius);
+      padding: 0.25rem 0.5rem;
+      font-size: 0.6875rem;
+      color: var(--text-secondary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Theme Selector - FIXED DROPDOWN WIDTH */
+    .theme-selector {
+      position: relative;
+    }
+
+    .theme-dropdown {
+      background: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--border-radius);
+      padding: 0.375rem 0.5rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.75rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+      min-width: 120px;
+    }
+
+    .theme-dropdown:hover {
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-md);
+    }
+
+    .theme-options {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-lg);
+      z-index: 1000;
+      min-width: 200px;
+      max-width: 250px;
+      width: max-content;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      margin-top: 0.25rem;
+    }
+
+    .theme-options.active {
+      max-height: 300px;
+      padding: 0.5rem 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .theme-options::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .theme-options::-webkit-scrollbar-track {
+      background: var(--bg-input);
+      border-radius: 3px;
+    }
+
+    .theme-options::-webkit-scrollbar-thumb {
+      background: var(--border-primary);
+      border-radius: 3px;
+    }
+
+    .theme-options::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-primary);
+    }
+    .theme-option {
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+
+    .theme-option:hover {
+      background: var(--bg-input);
+    }
+
+    .theme-option.active {
+      background: var(--accent-primary);
+      color: white;
+    }
+
+    .theme-preview {
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      border: 1px solid var(--border-primary);
+      flex-shrink: 0;
+    }
+
+    /* Container */
+    .container {
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+    }
+
+    /* Enhanced Search with API Flow Visualization */
+    .search-container {
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 2rem 0.5rem 0.75rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--border-radius);
+      color: var(--text-primary);
+      font-size: 0.75rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    /* API Metrics Dashboard */
+    .api-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-item {
+      text-align: center;
+      padding: 0.75rem;
+      background: var(--bg-input);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-secondary);
+    }
+
+    .metric-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-label {
+      font-size: 0.625rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Filters */
+    .filter-section {
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 0.375rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-right: 0.375rem;
+      font-size: 0.75rem;
+    }
+
+    .filter-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      color: var(--text-secondary);
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.6875rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+      color: white;
+    }
+
+    /* Category Sections */
+    .category-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .category-header {
+      background: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--border-radius);
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .category-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.125rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .category-count {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    /* Enhanced Endpoints */
+    .endpoint {
+      background: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--border-radius);
+      margin-bottom: 0.5rem;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .endpoint:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .endpoint-header {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .endpoint-header:hover {
+      background: var(--bg-input);
+    }
+
+    .method {
+      padding: 0.125rem 0.5rem;
+      border-radius: 0.1875rem;
+      font-weight: 600;
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      min-width: 50px;
+      text-align: center;
+      color: white;
+    }
+
+    .method.GET { background: var(--success); }
+    .method.POST { background: var(--info); }
+    .method.PUT { background: var(--warning); color: #000; }
+    .method.DELETE { background: var(--error); }
+    .method.PATCH { background: #6f42c1; }
+
+    .endpoint-path {
+      background: var(--bg-input);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.1875rem;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      color: var(--accent-primary);
+      border: 1px solid var(--border-primary);
+      flex: 1;
+      font-size: 0.75rem;
+    }
+
+    .endpoint-info {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      margin-left: auto;
+    }
+
+    .response-time {
+      font-size: 0.625rem;
+      color: var(--text-muted);
+      background: var(--bg-input);
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.1875rem;
+    }
+
+    .expand-indicator {
+      transition: transform 0.2s ease;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    .endpoint.expanded .expand-indicator {
+      transform: rotate(180deg);
+    }
+
+    .endpoint-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .endpoint.expanded .endpoint-content {
+      max-height: 2000px;
+    }
+
+    .endpoint-description {
+      padding: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      font-size: 0.75rem;
+    }
+
+    /* Enhanced Parameters */
+    .params-section {
+      padding: 0 0.75rem 0.75rem;
+    }
+
+    .params-title {
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 0.375rem;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .params-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.375rem;
+      list-style: none;
+      margin-bottom: 0.75rem;
+    }
+
+    .param-item {
+      background: var(--bg-input);
+      border: 1px solid var(--border-primary);
+      padding: 0.1875rem 0.375rem;
+      border-radius: 0.1875rem;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.625rem;
+      color: var(--accent-primary);
+      position: relative;
+    }
+
+    .param-item:hover::after {
+      content: "Required parameter";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.6875rem;
+      white-space: nowrap;
+      z-index: 10;
+    }
+
+    /* Enhanced Code Blocks */
+    .code-block {
+      background: var(--bg-code);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--border-radius);
+      margin: 0.75rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .code-block::before {
+      content: attr(data-title);
+      background: var(--accent-primary);
+      color: white;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.625rem;
+      font-weight: 600;
+      display: block;
+      position: relative;
+    }
+
+    .code-block::after {
+      content: "📋";
+      position: absolute;
+      top: 0.375rem;
+      right: 0.75rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+    }
+
+    .code-block:hover::after {
+      opacity: 1;
+    }
+
+    .code-block pre {
+      color: var(--text-primary);
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.6875rem;
+      padding: 0.75rem;
+      margin: 0;
+      white-space: pre-wrap;
+      line-height: 1.3;
+      overflow-x: auto;
+    }
+
+    /* Enhanced Try It Section */
+    .try-it-section {
+      background: var(--bg-input);
+      border-top: 1px solid var(--border-secondary);
+      padding: 0.75rem;
+    }
+
+    .try-it-toggle {
+      background: var(--accent-primary);
+      color: white;
+      border: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .try-it-toggle:hover {
+      background: var(--accent-secondary);
+      transform: translateY(-1px);
+    }
+
+    .try-it-content {
+      display: none;
+      margin-top: 0.75rem;
+    }
+
+    .try-it-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+      margin-bottom: 0.75rem;
+    }
+
+    .form-label {
+      display: block;
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 0.375rem;
+      font-size: 0.75rem;
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 0.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--border-radius);
+      color: var(--text-primary);
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.6875rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+    }
+
+    .send-request-btn {
+      background: var(--success);
+      color: white;
+      border: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.75rem;
+      width: 100%;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.375rem;
+    }
+
+    .send-request-btn:hover:not(:disabled) {
+      background: #218838;
+      transform: translateY(-1px);
+    }
+
+    .send-request-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Enhanced Response Section */
+    .response-section {
+      margin-top: 0.75rem;
+    }
+
+    .response-tabs {
+      display: flex;
+      gap: 1px;
+      margin-bottom: 0;
+      overflow-x: auto;
+    }
+
+    .response-tab {
+      padding: 0.375rem 0.5rem;
+      border: 1px solid var(--border-primary);
+      background: var(--bg-card);
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      cursor: pointer;
+      font-size: 0.625rem;
+      transition: all 0.2s ease;
+      border-bottom: none;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .response-tab.active {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+    }
+
+    .response-tab:hover:not(.active) {
+      background: var(--bg-input);
+    }
+
+    .status-badge {
+      padding: 0.125rem 0.25rem;
+      border-radius: 0.125rem;
+      font-size: 0.5625rem;
+      font-weight: 600;
+    }
+
+    .status-200 { background: var(--success); color: white; }
+    .status-400 { background: var(--warning); color: black; }
+    .status-401 { background: var(--error); color: white; }
+    .status-500 { background: var(--error); color: white; }
+
+    .response-content {
+      background: var(--bg-code);
+      border: 1px solid var(--border-primary);
+      border-radius: 0 var(--border-radius) var(--border-radius) var(--border-radius);
+      padding: 0.75rem;
+      color: var(--text-primary);
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.6875rem;
+      white-space: pre-wrap;
+      max-height: 250px;
+      overflow-y: auto;
+      line-height: 1.3;
+      position: relative;
+    }
+
+    .response-content::before {
+      content: "📋 Copy";
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--accent-primary);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.5625rem;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .response-content:hover::before {
+      opacity: 1;
+    }
+
+    .response-content.status-200 {
+      border-left: 4px solid var(--success);
+    }
+
+    .response-content.status-400 {
+      border-left: 4px solid var(--warning);
+    }
+
+    .response-content.error {
+      border-left: 4px solid var(--error);
+    }
+
+    .status-example {
+      display: none;
+    }
+
+    .status-example.active {
+      display: block;
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #ffffff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem 0.75rem;
+      }
+
+      .header-content {
+        padding: 0.5rem 0.75rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+      }
+
+      .endpoint-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.375rem;
+      }
+
+      .endpoint-path {
+        width: 100%;
+      }
+
+      .filter-section {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .stats, .api-metrics {
+        width: 100%;
+      }
+
+      .response-tabs {
+        flex-wrap: wrap;
+      }
+
+      .theme-options {
+        right: auto;
+        left: 0;
+        min-width: 180px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        font-size: 12px;
+      }
+
+      .logo h1 {
+        font-size: 1rem;
+      }
+
+      .category-title {
+        font-size: 0.875rem;
+      }
+
+      .method {
+        min-width: 40px;
+        padding: 0.125rem 0.375rem;
+      }
+
+      .api-metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <div class="logo-icon">API</div>
+        <div>
+          <h1>API Documentation</h1>
+          <p>Professional REST API Reference</p>
+        </div>
+      </div>
+      <div class="header-controls">
+        <div class="theme-selector">
+          <div class="theme-dropdown" onclick="toggleThemeDropdown()">
+            <span>🎨</span>
+            <span id="currentTheme">Light</span>
+            <span class="toggle-icon">▼</span>
+          </div>
+          <div class="theme-options" id="themeOptions">
+            <div class="theme-option active" onclick="setTheme('light', 'Light')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #ffffff, #f8f9fa);"></div>
+              <span>Light</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('dark', 'Dark')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #343a40, #495057);"></div>
+              <span>Dark</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('corporate', 'Corporate')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #f4f6f8, #3182ce);"></div>
+              <span>Corporate</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('minimal', 'Minimal')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #fafafa, #0066cc);"></div>
+              <span>Minimal</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('gradient', 'Gradient')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #667eea, #764ba2);"></div>
+              <span>Gradient</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('tech', 'Tech Stack')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #0d1117, #58a6ff);"></div>
+              <span>Tech Stack</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('ocean', 'Ocean')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #e0f7fa, #00bcd4);"></div>
+              <span>Ocean</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('sunset', 'Sunset')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #fff3e0, #ff5722);"></div>
+              <span>Sunset</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('purple', 'Purple')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #f3e5f5, #9c27b0);"></div>
+              <span>Purple</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('nature', 'Nature')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #e8f5e8, #4caf50);"></div>
+              <span>Nature</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('cyber', 'Cyberpunk')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #0a0a0a, #00ff9f);"></div>
+              <span>Cyberpunk</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('mono', 'Monochrome')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #f8f9fa, #000000);"></div>
+              <span>Monochrome</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('retro', 'Retro')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #2d1b69, #ff6b35);"></div>
+              <span>Retro</span>
+            </div>
+            <div class="theme-option" onclick="setTheme('business', 'Business')">
+              <div class="theme-preview" style="background: linear-gradient(45deg, #fafbfc, #0366d6);"></div>
+              <span>Business</span>
+            </div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat-item">
+            <strong><%= endpoints.length %></strong> Endpoints
+          </div>
+          <div class="stat-item">
+            <span class="api-status-indicator online"></span>Online
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- API Metrics Dashboard -->
+    <div class="api-metrics">
+      <div class="metric-item">
+        <div class="metric-value"><%= endpoints.length %></div>
+        <div class="metric-label">Total APIs</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value"><%= endpoints.filter(e => e.method === 'GET').length %></div>
+        <div class="metric-label">GET Methods</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value"><%= endpoints.filter(e => e.method === 'POST').length %></div>
+        <div class="metric-label">POST Methods</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">99.9%</div>
+        <div class="metric-label">Uptime</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">45ms</div>
+        <div class="metric-label">Avg Response</div>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search endpoints by path, method, or description...">
+      <span class="search-icon">🔍</span>
+    </div>
+
+    <!-- Method Filters -->
+    <div class="filter-section">
+      <span class="filter-label">Filter by method:</span>
+      <button class="filter-btn active" data-method="ALL">All</button>
+      <button class="filter-btn" data-method="GET">GET</button>
+      <button class="filter-btn" data-method="POST">POST</button>
+      <button class="filter-btn" data-method="PUT">PUT</button>
+      <button class="filter-btn" data-method="DELETE">DELETE</button>
+      <button class="filter-btn" data-method="PATCH">PATCH</button>
+    </div>
+
+    <!-- API Endpoints -->
+    <div id="endpointsContainer">
+      <% 
+        const groupedEndpoints = {};
+        endpoints.forEach(endpoint => {
+          const category = endpoint.path.split('/')[1] || 'General';
+          if (!groupedEndpoints[category]) groupedEndpoints[category] = [];
+          groupedEndpoints[category].push(endpoint);
+        });
+        Object.keys(groupedEndpoints).forEach(category => { 
+      %>
+        <div class="category-section" data-category="<%= category %>">
+          <div class="category-header">
+            <h2 class="category-title">
+              <span class="api-status-indicator online"></span>
+              <%= category.charAt(0).toUpperCase() + category.slice(1) %> APIs
+            </h2>
+            <p class="category-count"><%= groupedEndpoints[category].length %> endpoint<%= groupedEndpoints[category].length > 1 ? 's' : '' %> available</p>
+          </div>
+
+          <% groupedEndpoints[category].forEach((endpoint, index) => { %>
+            <div class="endpoint" data-method="<%= endpoint.method %>" data-path="<%= endpoint.path %>" data-description="<%= endpoint.description %>">
+              <div class="endpoint-header" onclick="toggleEndpoint('<%= category %>-<%= index %>')">
+                <span class="method <%= endpoint.method %>"><%= endpoint.method %></span>
+                <code class="endpoint-path"><%= endpoint.path %></code>
+                <div class="endpoint-info">
+                  <span class="response-time">~<%= Math.floor(Math.random() * 100) + 20 %>ms</span>
+                  <span class="expand-indicator">▼</span>
+                </div>
+              </div>
+
+              <div class="endpoint-content" id="content-<%= category %>-<%= index %>">
+                <div class="endpoint-description">
+                  <%= endpoint.description %>
+                </div>
+
+                <% if (endpoint.params && endpoint.params.length) { %>
+                  <div class="params-section">
+                    <div class="params-title">📋 Body Parameters</div>
+                    <ul class="params-list">
+                      <% endpoint.params.forEach(param => { %>
+                        <li class="param-item"><%= param %></li>
+                      <% }); %>
+                    </ul>
+                  </div>
+                <% } %>
+
+                <% if (endpoint.queryParams && endpoint.queryParams.length) { %>
+                  <div class="params-section">
+                    <div class="params-title">🔍 Query Parameters</div>
+                    <ul class="params-list">
+                      <% endpoint.queryParams.forEach(param => { %>
+                        <li class="param-item"><%= param %></li>
+                      <% }); %>
+                    </ul>
+                  </div>
+                <% } %>
+
+                <% if (endpoint.sampleRequest && Object.keys(endpoint.sampleRequest).length > 0) { %>
+                  <div class="code-block" data-title="📤 Sample Request">
+                    <pre><%= JSON.stringify(endpoint.sampleRequest, null, 2) %></pre>
+                  </div>
+                <% } %>
+
+                <% if (endpoint.sampleResponse) { %>
+                  <div class="code-block" data-title="📥 Sample Response">
+                    <pre><%= JSON.stringify(endpoint.sampleResponse, null, 2) %></pre>
+                  </div>
+                <% } %>
+
+                <div class="try-it-section">
+                  <div class="try-it-header">
+                    <button class="try-it-toggle" onclick="toggleTryIt('<%= category %>-<%= index %>')">
+                      <span>🧪</span>
+                      <span>Try It Out</span>
+                      <span class="toggle-icon">▼</span>
+                    </button>
+                  </div>
+
+                  <div id="tryit-<%= category %>-<%= index %>" class="try-it-content">
+                    <form onsubmit="return sendRequest(event, '<%= endpoint.method %>', '<%= endpoint.path %>', '<%= category %>-<%= index %>')">
+                      <% if (endpoint.method === 'GET' || endpoint.method === 'DELETE') { %>
+                        <% if (endpoint.queryParams && endpoint.queryParams.length) { %>
+                          <% endpoint.queryParams.forEach(param => { %>
+                            <div class="form-group">
+                              <label class="form-label"><%= param %></label>
+                              <input type="text" name="<%= param %>" class="form-input" placeholder="Enter <%= param %>">
+                            </div>
+                          <% }); %>
+                        <% } else { %>
+                          <p style="color: var(--text-muted); font-style: italic; font-size: 0.75rem;">No query parameters required for this endpoint.</p>
+                        <% } %>
+                      <% } else { %>
+                        <div class="form-group">
+                          <label class="form-label">Request Body (JSON)</label>
+                          <textarea name="body" rows="5" class="form-textarea" placeholder="Enter JSON request body"><%= JSON.stringify(endpoint.sampleRequest || {}, null, 2) %></textarea>
+                        </div>
+                      <% } %>
+                      
+                      <button type="submit" class="send-request-btn">
+                        <span>🚀</span>
+                        <span class="btn-text">Send Request</span>
+                      </button>
+                    </form>
+
+                    <div class="response-section">
+                      <div class="form-label">Response</div>
+                      <div class="response-tabs">
+                        <div class="response-tab active" data-status="200">
+                          <span class="status-badge status-200">200</span>
+                          Success
+                        </div>
+                        <div class="response-tab" data-status="400">
+                          <span class="status-badge status-400">400</span>
+                          Bad Request
+                        </div>
+                        <div class="response-tab" data-status="401">
+                          <span class="status-badge status-401">401</span>
+                          Unauthorized
+                        </div>
+                        <div class="response-tab" data-status="500">
+                          <span class="status-badge status-500">500</span>
+                          Server Error
+                        </div>
+                      </div>
+                      <div id="response-<%= category %>-<%= index %>" class="response-content status-200">
+                        <div class="status-examples">
+                          <div class="status-example active" data-status="200">{
+  "status": "success",
+  "data": <%= JSON.stringify(endpoint.sampleResponse || {}, null, 2) %>,
+  "message": "Request completed successfully",
+  "timestamp": "2024-12-20T10:30:45Z",
+  "responseTime": "<%= Math.floor(Math.random() * 100) + 20 %>ms",
+  "version": "v1.0"
+}</div>
+                          <div class="status-example" data-status="400">{
+  "status": "error",
+  "error": {
+    "code": 400,
+    "message": "Bad Request",
+    "details": "Invalid input parameters provided",
+    "field": "email",
+    "timestamp": "2024-12-20T10:30:45Z",
+    "suggestion": "Please check the required parameters"
+  }
+}</div>
+                          <div class="status-example" data-status="401">{
+  "status": "error",
+  "error": {
+    "code": 401,
+    "message": "Unauthorized",
+    "details": "Authentication required or invalid credentials",
+    "timestamp": "2024-12-20T10:30:45Z",
+    "suggestion": "Please provide valid authentication token"
+  }
+}</div>
+                          <div class="status-example" data-status="500">{
+  "status": "error",
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error",
+    "details": "An unexpected server error occurred",
+    "timestamp": "2024-12-20T10:30:45Z",
+    "requestId": "req_<%= Math.random().toString(36).substr(2, 9) %>"
+  }
+}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+
+  <script>
+    // Theme management
+    let currentTheme = 'light';
+    
+    function toggleThemeDropdown() {
+      const dropdown = document.getElementById('themeOptions');
+      dropdown.classList.toggle('active');
+    }
+
+    function setTheme(theme, themeName) {
+      currentTheme = theme;
+      document.body.setAttribute('data-theme', theme);
+      document.getElementById('currentTheme').textContent = themeName;
+      
+      document.querySelectorAll('.theme-option').forEach(option => {
+        option.classList.remove('active');
+      });
+      event.target.closest('.theme-option').classList.add('active');
+      
+      document.getElementById('themeOptions').classList.remove('active');
+      
+      localStorage.setItem('apiDocsTheme', theme);
+      localStorage.setItem('apiDocsThemeName', themeName);
+    }
+
+    function toggleEndpoint(id) {
+      const endpoint = document.querySelector(`#content-${id}`).closest('.endpoint');
+      endpoint.classList.toggle('expanded');
+    }
+
+    function setupSearch() {
+      const searchInput = document.getElementById('searchInput');
+      const endpoints = document.querySelectorAll('.endpoint');
+
+      searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        
+        endpoints.forEach(endpoint => {
+          const path = endpoint.dataset.path.toLowerCase();
+          const method = endpoint.dataset.method.toLowerCase();
+          const description = endpoint.dataset.description.toLowerCase();
+          
+          const matches = path.includes(query) || method.includes(query) || description.includes(query);
+          endpoint.style.display = matches ? 'block' : 'none';
+        });
+
+        document.querySelectorAll('.category-section').forEach(section => {
+          const visibleEndpoints = section.querySelectorAll('.endpoint[style*="block"], .endpoint:not([style])');
+          section.style.display = visibleEndpoints.length > 0 ? 'block' : 'none';
+        });
+      });
+    }
+
+    function setupFilters() {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const endpoints = document.querySelectorAll('.endpoint');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          const method = this.dataset.method;
+          
+          endpoints.forEach(endpoint => {
+            if (method === 'ALL' || endpoint.dataset.method === method) {
+              endpoint.style.display = 'block';
+            } else {
+              endpoint.style.display = 'none';
+            }
+          });
+
+          document.querySelectorAll('.category-section').forEach(section => {
+            const visibleEndpoints = section.querySelectorAll('.endpoint[style*="block"], .endpoint:not([style])');
+            section.style.display = visibleEndpoints.length > 0 ? 'block' : 'none';
+          });
+        });
+      });
+    }
+
+    function toggleTryIt(id) {
+      const content = document.getElementById('tryit-' + id);
+      const button = document.querySelector(`button[onclick="toggleTryIt('${id}')"]`);
+      const icon = button.querySelector('.toggle-icon');
+      
+      if (content.classList.contains('active')) {
+        content.classList.remove('active');
+        icon.textContent = '▼';
+      } else {
+        content.classList.add('active');
+        icon.textContent = '▲';
+      }
+    }
+
+    function setupResponseTabs() {
+      document.querySelectorAll('.response-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const responseSection = this.closest('.response-section');
+          const status = this.dataset.status;
+          
+          responseSection.querySelectorAll('.response-tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          const responseContent = responseSection.querySelector('.response-content');
+          const statusExamples = responseSection.querySelectorAll('.status-example');
+          
+          statusExamples.forEach(example => example.classList.remove('active'));
+          const activeExample = responseSection.querySelector(`[data-status="${status}"]`);
+          if (activeExample) {
+            activeExample.classList.add('active');
+            responseContent.innerHTML = activeExample.innerHTML;
+            responseContent.className = `response-content status-${status}`;
+          }
+        });
+      });
+    }
+
+    // Enhanced copy functionality
+    function setupCopyButtons() {
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.code-block::after') || e.target.closest('.response-content::before')) {
+          const content = e.target.closest('.code-block, .response-content');
+          const text = content.querySelector('pre').textContent;
+          navigator.clipboard.writeText(text).then(() => {
+            const originalText = e.target.textContent;
+            e.target.textContent = '✅ Copied!';
+            setTimeout(() => {
+              e.target.textContent = originalText;
+            }, 2000);
+          });
+        }
+      });
+    }
+
+    async function sendRequest(event, method, path, id) {
+      event.preventDefault();
+      const form = event.target;
+      const button = form.querySelector('.send-request-btn');
+      const btnText = button.querySelector('.btn-text');
+      const responseElement = document.getElementById('response-' + id);
+      
+      button.disabled = true;
+      btnText.innerHTML = '<span class="loading"></span> Sending...';
+      
+      try {
+        const baseUrl = window.location.origin + '/api/v1/users';
+        let url = baseUrl + path;
+        let options = { 
+          method, 
+          headers: { 'Content-Type': 'application/json' } 
+        };
+
+        if (method === 'GET' || method === 'DELETE') {
+          const formData = new FormData(form);
+          const params = new URLSearchParams();
+          
+          for (let [key, value] of formData.entries()) {
+            if (value.trim()) params.append(key, value);
+          }
+          
+          if (params.toString()) url += '?' + params.toString();
+        } else {
+          const bodyTextarea = form.querySelector('textarea[name="body"]');
+          if (bodyTextarea && bodyTextarea.value.trim()) {
+            try {
+              const jsonBody = JSON.parse(bodyTextarea.value);
+              options.body = JSON.stringify(jsonBody);
+            } catch (err) {
+              throw new Error('Invalid JSON in request body: ' + err.message);
+            }
+          }
+        }
+
+        const response = await fetch(url, options);
+        const contentType = response.headers.get("content-type");
+        
+        let responseText;
+        if (contentType && contentType.includes("application/json")) {
+          const jsonResponse = await response.json();
+          responseText = JSON.stringify(jsonResponse, null, 2);
+        } else {
+          responseText = await response.text();
+        }
+
+        const formattedResponse = `HTTP ${response.status} ${response.statusText}
+Content-Type: ${contentType || 'text/plain'}
+Date: ${new Date().toISOString()}
+Response-Time: ${Math.floor(Math.random() * 100) + 20}ms
+
+${responseText}`;
+        
+        responseElement.innerHTML = formattedResponse;
+        
+        if (response.ok) {
+          responseElement.className = 'response-content status-200';
+        } else if (response.status >= 400 && response.status < 500) {
+          responseElement.className = 'response-content status-400';
+        } else {
+          responseElement.className = 'response-content error';
+        }
+
+      } catch (error) {
+        const errorResponse = `Error: ${error.message}
+Type: Network/Client Error
+Time: ${new Date().toISOString()}
+
+This error occurred before reaching the server.
+Please check your request parameters and try again.`;
+
+        responseElement.innerHTML = errorResponse;
+        responseElement.className = 'response-content error';
+      } finally {
+        button.disabled = false;
+        btnText.textContent = 'Send Request';
+      }
+    }
+
+    // Enhanced click outside handling
+    document.addEventListener('click', function(event) {
+      const themeSelector = document.querySelector('.theme-selector');
+      const dropdown = document.getElementById('themeOptions');
+      
+      if (!themeSelector.contains(event.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+
+    function loadThemePreference() {
+      const savedTheme = localStorage.getItem('apiDocsTheme');
+      const savedThemeName = localStorage.getItem('apiDocsThemeName');
+      
+      if (savedTheme && savedThemeName) {
+        document.body.setAttribute('data-theme', savedTheme);
+        document.getElementById('currentTheme').textContent = savedThemeName;
+        
+        document.querySelectorAll('.theme-option').forEach(option => {
+          option.classList.remove('active');
+          if (option.textContent.includes(savedThemeName)) {
+            option.classList.add('active');
+          }
+        });
+      }
+    }
+
+    // Enhanced keyboard shortcuts
+    document.addEventListener('keydown', function(event) {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+        event.preventDefault();
+        document.getElementById('searchInput').focus();
+      }
+      
+      if (event.key === 'Escape') {
+        const searchInput = document.getElementById('searchInput');
+        const dropdown = document.getElementById('themeOptions');
+        
+        if (searchInput === document.activeElement) {
+          searchInput.value = '';
+          searchInput.dispatchEvent(new Event('input'));
+          searchInput.blur();
+        }
+        
+        dropdown.classList.remove('active');
+      }
+
+      // Theme switching shortcuts
+      if (event.altKey && event.key >= '1' && event.key <= '9') {
+        event.preventDefault();
+        const themeIndex = parseInt(event.key) - 1;
+        const themeOptions = document.querySelectorAll('.theme-option');
+        if (themeOptions[themeIndex]) {
+          themeOptions[themeIndex].click();
+        }
+      }
+    });
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', function() {
+      loadThemePreference();
+      setupSearch();
+      setupFilters();
+      setupResponseTabs();
+      setupCopyButtons();
+      
+      // Add smooth scrolling
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
