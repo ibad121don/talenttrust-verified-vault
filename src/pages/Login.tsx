@@ -47,7 +47,7 @@ const Login = () => {
       user?.id || "no user"
     );
     if (user != null) {
-      logout();
+      // logout();
     }
   }, []);
 

@@ -14,6 +14,7 @@ export default function Success() {
   const saveToDB = async () => {
     let userdata = await localStorage.getItem("user_subcription");
     let tempuser = JSON.parse(userdata);
+    console.log(tempuser);
     if (userdata != null) {
       await pricingService.createSubscription(tempuser.userId, tempuser.planId);
       await localStorage.removeItem("user_subcription");

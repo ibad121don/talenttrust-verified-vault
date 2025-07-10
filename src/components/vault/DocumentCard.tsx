@@ -47,13 +47,16 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
     checkuser();
   }, []);
   const checkuser = async () => {
+    console.log(1);
     let dataUser = await localStorage.getItem("userprofile");
     let tempUser = JSON.parse(dataUser);
+
     const { data: profile, error } = await supabase
       .from("users")
       .select("*")
       .eq("id", tempUser.id)
       .single();
+
     const { data: subcripti_data } = await supabase
       .from("user_subscriptions")
       .select("*")
@@ -88,6 +91,7 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
         });
         return;
       }
+
       setVerifying(true);
 
       const fullUrl = document.file_url;
