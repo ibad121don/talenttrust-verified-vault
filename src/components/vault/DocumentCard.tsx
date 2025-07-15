@@ -114,7 +114,34 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
       const category = (document.type || "other").toLowerCase();
 
       const result = await VerifcationData(signedUrl, category);
-      const { extracted, stamp, signature, result: resultMessage } = result;
+      const {
+        extracted,
+        stamp,
+        signature,
+        result: resultMessage,
+        sourceType,
+      } = result;
+
+      // 🧠 Source type check
+      console.log("🕵️‍♂️ Source Type Detected:", sourceType);
+      if (sourceType !== "real") {
+        await supabase
+          .from("documents")
+          .update({
+            status: "failed",
+            verification_reason: `Document rejected — Detected as ${sourceType}`,
+          })
+          .eq("id", document.id);
+
+        toast({
+          title: "Verification Failed",
+          description: `Document is not original Detected: ${sourceType}`,
+          variant: "destructive",
+        });
+
+        setVerifying(false);
+        return;
+      }
 
       const requiredFields = ["name", "dateOfIssue", "registrationNumber"];
       let matchCount = 0;
@@ -148,7 +175,6 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
         "other",
       ];
 
-      // 🔍 Debug logs
       console.log("📄 Category:", category);
       console.log("🔖 Stamp:", stampDetected);
       console.log("✍️ Signature:", signatureDetected);
@@ -157,35 +183,52 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
       let newStatus: "verified" | "partial_verified" | "failed" = "failed";
       let toastDescription = resultMessage;
 
-      // ✅ Degree & Certificate logic (stamp + signature only)
+      // Degree & Certificate
       if (category === "degree" || category === "certificate") {
         if (stampDetected && signatureDetected) {
           newStatus = "verified";
           toastDescription = "Document verified";
         } else if (stampDetected || signatureDetected) {
           newStatus = "partial_verified";
-          toastDescription = " Missing one stamp/signature 🧐";
+
+          if (!stampDetected && signatureDetected) {
+            toastDescription = "Stamp is missing";
+          } else if (stampDetected && !signatureDetected) {
+            toastDescription = "Signature is missing";
+          } else {
+            toastDescription = "Missing either stamp or signature";
+          }
         } else {
           newStatus = "failed";
-          toastDescription = "Document cannot be verified";
+          toastDescription = "Stamp and signature both missing";
         }
       }
 
-      // ✅ Official docs need stamp + signature + fields
+      // Official documents
       else if (officialDocs.includes(category)) {
         if (stampDetected && signatureDetected && matchCount === 3) {
           newStatus = "verified";
           toastDescription = "Document verified";
         } else if (stampDetected && signatureDetected && matchCount >= 1) {
           newStatus = "partial_verified";
-          toastDescription = "Stamp & Signature found, but missing some fields";
+          toastDescription =
+            "Stamp & Signature found , but some required fields are missing";
         } else {
           newStatus = "failed";
-          toastDescription = "Document cannot be verified";
+
+          const missingParts = [];
+          if (!stampDetected) missingParts.push("Stamp");
+          if (!signatureDetected) missingParts.push("Signature");
+          if (matchCount < 1) missingParts.push("Key Fields");
+
+          toastDescription =
+            missingParts.length > 0
+              ? `Missing: ${missingParts.join(", ")} `
+              : "Document cannot be verified";
         }
       }
 
-      // ✅ Simple documents: only fields required
+      // Simple documents
       else if (simpleDocs.includes(category)) {
         if (matchCount >= 2) {
           newStatus = "verified";
@@ -199,7 +242,6 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
         }
       }
 
-      // ✅ Update in Supabase
       const { error: updateError } = await supabase
         .from("documents")
         .update({
