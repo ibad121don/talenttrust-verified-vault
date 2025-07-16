@@ -288,11 +288,14 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
     try {
       console.log("📨 Sending OCR request for:", imageUrl);
 
-      const res = await fetch("http://localhost:8001/api/v1/ocr/extract-text", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: imageUrl, category }),
-      });
+      const res = await fetch(
+        "https://talent-backend-production.up.railway.app/api/v1/ocr/extract-text",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: imageUrl, category }),
+        }
+      );
 
       const data = await res.json();
 

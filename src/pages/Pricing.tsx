@@ -191,7 +191,7 @@ const Pricing = () => {
 
       // For Standard and Premium plans
       const res = await fetch(
-        "http://localhost:8001/api/v1/stripe/create-checkout-session",
+        "https://talent-backend-production.up.railway.app/api/v1/stripe/create-checkout-session",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
