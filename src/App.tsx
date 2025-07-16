@@ -32,6 +32,7 @@ import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import HelpCenter from "./pages/HelpCenter";
 import Success from "./pages/success";
+import Portfolio from "./pages/Portfolio";
 
 const queryClient = new QueryClient();
 
@@ -71,8 +72,9 @@ const App = () => (
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/help" element={<HelpCenter />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="/portfolio/:portfolioId" element={<Portfolio />} />
             <Route path="/success" element={<Success />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

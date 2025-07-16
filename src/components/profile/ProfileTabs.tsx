@@ -1,10 +1,10 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, Award, Activity, Settings } from "lucide-react";
 import ProfilePersonalInfo from "./ProfilePersonalInfo";
 import ProfileSkills from "./ProfileSkills";
 import ProfileActivity from "./ProfileActivity";
 import ProfileSettings from "./ProfileSettings";
+import ProfileVerifiedDocuments from "./ProfileVerifiedDocuments";
 
 interface ProfileData {
   firstName: string;
@@ -29,40 +29,53 @@ interface ProfileTabsProps {
   onProfileDataChange: (data: ProfileData) => void;
 }
 
-const ProfileTabs = ({ 
-  activeTab, 
-  onTabChange, 
-  profileData, 
-  isEditing, 
-  onProfileDataChange 
+const ProfileTabs = ({
+  activeTab,
+  onTabChange,
+  profileData,
+  isEditing,
+  onProfileDataChange,
 }: ProfileTabsProps) => {
   return (
     <Tabs value={activeTab} onValueChange={onTabChange}>
       <TabsList className="mb-8">
-        <TabsTrigger value="profile" className="flex flex-col items-center py-3 px-4">
+        <TabsTrigger
+          value="profile"
+          className="flex flex-col items-center py-3 px-4"
+        >
           <User className="h-5 w-5 mb-1" />
           <span className="text-xs">Profile Details</span>
         </TabsTrigger>
-        <TabsTrigger value="skills" className="flex flex-col items-center py-3 px-4">
+        <TabsTrigger
+          value="skills"
+          className="flex flex-col items-center py-3 px-4"
+        >
           <Award className="h-5 w-5 mb-1" />
           <span className="text-xs">Skills & Qualifications</span>
         </TabsTrigger>
-        <TabsTrigger value="activity" className="flex flex-col items-center py-3 px-4">
+        <TabsTrigger
+          value="activity"
+          className="flex flex-col items-center py-3 px-4"
+        >
           <Activity className="h-5 w-5 mb-1" />
           <span className="text-xs">Recent Activity</span>
         </TabsTrigger>
-        <TabsTrigger value="settings" className="flex flex-col items-center py-3 px-4">
+        <TabsTrigger
+          value="settings"
+          className="flex flex-col items-center py-3 px-4"
+        >
           <Settings className="h-5 w-5 mb-1" />
           <span className="text-xs">Settings</span>
         </TabsTrigger>
       </TabsList>
 
       <TabsContent value="profile" className="space-y-6">
-        <ProfilePersonalInfo 
+        <ProfilePersonalInfo
           profileData={profileData}
           isEditing={isEditing}
           onProfileDataChange={onProfileDataChange}
         />
+        <ProfileVerifiedDocuments profileData={profileData} />
       </TabsContent>
 
       <TabsContent value="skills">
