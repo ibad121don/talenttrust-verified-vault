@@ -182,7 +182,7 @@ const Pricing = () => {
       let dataUser = await localStorage.getItem("userprofile");
       let tempUser = JSON.parse(dataUser);
       await localStorage.setItem(
-        "user_subcription",
+        "payments",
         JSON.stringify({
           userId: tempUser.id,
           planId: planId,
